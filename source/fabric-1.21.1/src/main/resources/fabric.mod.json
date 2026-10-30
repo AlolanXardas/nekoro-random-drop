@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "nekoro_random_drop",
+  "version": "${version}",
+  "name": "Nekoro Random Drop",
+  "description": "Extra random drops from blocks and mobs, set up in a config file. Optional Cobblemon support for drops from defeated and caught Pokemon.",
+  "authors": ["Alolan Xardas"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.xardas.nekororandomdrop.NekoroRandomDropFabric"],
+    "jei_mod_plugin": ["dev.xardas.nekororandomdrop.compat.jei.RandomDropJeiPlugin"]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "cobblemon": "*",
+    "jei": "*"
+  }
+}

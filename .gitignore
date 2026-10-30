@@ -1,0 +1,18 @@
+# Only the files listed here are published; everything else in this folder stays local.
+/*
+!/source/
+!/LICENSE
+!/DESCRIPTION.html
+!/README.md
+!/.gitignore
+# build output and caches
+build/
+.gradle/
+run/
+runs/
+out/
+bin/
+.idea/
+*.iml
+.vscode/
+.claude/
