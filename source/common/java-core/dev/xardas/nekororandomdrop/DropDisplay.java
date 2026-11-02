@@ -54,9 +54,14 @@ public record DropDisplay(List<ItemStack> sources, ItemStack sourceIcon, ItemSta
         if ((block || mob) && rule.bonus() != Rule.Bonus.NONE) {
             notes.add(Component.translatable(KEY + "note." + (block ? "fortune_" : "looting_") + rule.bonus().name().toLowerCase(Locale.ROOT)).getString());
         }
-        if (block) notes.add(Component.translatable(KEY + (rule.silkTouch() ? "note.silk_touch" : "note.no_silk_touch")).getString());
+        if (block) notes.add(Component.translatable(KEY + switch (rule.silkTouch()) {
+            case NO -> "note.no_silk_touch";
+            case YES -> "note.silk_touch";
+            case BONUS -> "note.silk_touch_bonus";
+        }).getString());
         if (!rule.playerOnly()) notes.add(Component.translatable(KEY + "note.any_cause").getString());
         if (rule.toInventory()) notes.add(Component.translatable(KEY + "note.to_inventory").getString());
+        if (rule.minTool() != null) notes.add(Component.translatable(KEY + "note.min_tool", capitalize(rule.minTool())).getString());
         if (rule.cooldown() > 0) notes.add(Component.translatable(KEY + "note.cooldown", seconds(rule.cooldown())).getString());
         if (!notes.isEmpty()) {
             String text = String.join(", ", notes);

@@ -1,0 +1,165 @@
+// Nekoro Random Drop: extra drops from blocks, mobs and (with Cobblemon) Pokemon.
+// Every rule is rolled on its own. After editing, use /randomdrop reload in game (/reload works too).
+//
+// "source"       "block", "mob", "pokemon_kill" (killed or defeated in battle) or "pokemon_catch"
+// "match"        block or entity id, or a tag starting with #. A list works too: ["minecraft:stone", "#c:ores"]
+//                Pokemon rules: species ids, optional (for example "cobblemon:pikachu")
+// "type"         Pokemon rules only, optional: "fire" or ["fire", "water"]
+// "item"         item to give (can be left out if the rule only gives xp)
+// "count"        how many items, default 1
+// "chance"       0.0 to 1.0, default 1.0 (always). 0.005 is 0.5%
+// "xp"           experience points, default 0
+// "bonus"        how Fortune (blocks) or Looting (mobs) helps, default "multiply":
+//                "multiply" like vanilla ores, works with any enchantment level
+//                "chance"   chance x (level + 1)
+//                "none"
+// "silk_touch"   blocks only, what happens when the block is mined with Silk Touch, default false:
+//                false    no drop
+//                true     drops as usual
+//                "bonus"  the chance goes up with the Silk Touch level, see silk_touch_bonus_per_level below
+// "player_only"  only when a player mines the block or kills the mob, default true
+// "to_inventory" put the reward straight into the player's inventory, default false (dropped on the ground);
+//                xp then appears at the player instead, so Mending still gets it
+// "cooldown"     ticks before the same player can get this rule again, default 0 (20 ticks = 1 second)
+// "min_tool"     the tool (blocks) or weapon (mobs) must be at least this tier: "wood", "stone", "iron",
+//                "diamond" or "netherite". E.g. "iron" for diamonds, like mining a diamond ore
+//
+// Where it works (all optional, checked at the mined block, the dead mob or the player who caught the Pokemon):
+// "min_y"        lowest Y level, included. "max_y": highest Y level, included
+// "dimension"    dimension id or a list: "minecraft:overworld", "minecraft:the_nether", "minecraft:the_end"
+// "biome"        biome id or a biome tag starting with #, a list works too: ["minecraft:lush_caves", "#c:is_ocean"]
+{
+  // For "silk_touch": "bonus" rules: Silk Touch I keeps the normal chance and every level above adds this much.
+  // 1.0: II doubles the chance, X makes it 10 times higher. 0.5: II 1.5 times, X 5.5 times. 0: no bonus.
+  // Levels above I need a mod that raises enchantment levels, for example Nekoro World Setup.
+  "silk_touch_bonus_per_level": 1.0,
+
+  "rules": [
+    // ORES FROM STONE
+    // The rules below make mined stone and deepslate drop ores about as often as vanilla ore generation
+    // would give them at that height, so they are meant for worlds WITHOUT ores (for example with
+    // "remove_ores" in Nekoro World Setup). If your world still generates ores, delete these rules,
+    // or you get ores twice. Deepslate drops twice as often, because it takes longer to mine.
+    // Below Y 0 every kind drops; emeralds are 10 times more common in mountains, gold in badlands.
+    // ores: worked out from vanilla ore placement
+    // coal
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.0041252, "min_y": -64, "max_y": -1, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.0082505, "min_y": -64, "max_y": -1, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.0024859, "min_y": 8, "max_y": 15, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.0050799, "min_y": 16, "max_y": 31, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.0094032, "min_y": 32, "max_y": 55, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.016429, "min_y": 56, "max_y": 135, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.023178, "min_y": 136, "max_y": 183, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:coal", "xp": 1, "chance": 0.01621, "min_y": 184, "max_y": 319, "min_tool": "wood", "silk_touch": "bonus" },
+    // iron
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.004708, "min_y": -64, "max_y": -9, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.009416, "min_y": -64, "max_y": -9, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.0094561, "min_y": -8, "max_y": 7, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.018912, "min_y": -8, "max_y": 7, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.012752, "min_y": 8, "max_y": 31, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.007149, "min_y": 32, "max_y": 47, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.0031939, "min_y": 48, "max_y": 55, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.0017108, "min_y": 56, "max_y": 71, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.0023624, "min_y": 88, "max_y": 95, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.0048274, "min_y": 96, "max_y": 111, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.0089359, "min_y": 112, "max_y": 135, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.015509, "min_y": 136, "max_y": 175, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.025472, "min_y": 176, "max_y": 287, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_iron", "chance": 0.016537, "min_y": 288, "max_y": 319, "min_tool": "stone", "silk_touch": "bonus" },
+    // copper
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.0021465, "min_y": -64, "max_y": -1, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.004293, "min_y": -64, "max_y": -1, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.0053787, "min_y": 0, "max_y": 15, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.010757, "min_y": 0, "max_y": 15, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.0099564, "min_y": 16, "max_y": 39, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.012417, "min_y": 40, "max_y": 71, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.0074387, "min_y": 72, "max_y": 87, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.0046921, "min_y": 88, "max_y": 95, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.002861, "min_y": 96, "max_y": 103, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_copper", "count": 3, "chance": 0.00103, "min_y": 104, "max_y": 111, "min_tool": "stone", "silk_touch": "bonus" },
+    // gold
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.002243, "min_y": -64, "max_y": -33, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.0044861, "min_y": -64, "max_y": -33, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.0034515, "min_y": -32, "max_y": 7, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.0069031, "min_y": -32, "max_y": 7, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.0018768, "min_y": 8, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.0011444, "min_y": 16, "max_y": 23, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.00041199, "min_y": 24, "max_y": 31, "min_tool": "iron", "silk_touch": "bonus" },
+    // redstone
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.011316, "min_y": -64, "max_y": -49, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.022632, "min_y": -64, "max_y": -49, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.0069214, "min_y": -48, "max_y": -41, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.013843, "min_y": -48, "max_y": -41, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.0039917, "min_y": -40, "max_y": -33, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.0079834, "min_y": -40, "max_y": -33, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.0023437, "min_y": -32, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:redstone", "count": 4, "xp": 3, "chance": 0.0046875, "min_y": -32, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus" },
+    // lapis
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.0013279, "min_y": -64, "max_y": -25, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.0026558, "min_y": -64, "max_y": -25, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.0028339, "min_y": -24, "max_y": -1, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.0056678, "min_y": -24, "max_y": -1, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.002914, "min_y": 0, "max_y": 23, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.0058281, "min_y": 0, "max_y": 23, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.0013439, "min_y": 24, "max_y": 63, "min_tool": "stone", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:lapis_lazuli", "count": 6, "xp": 3, "chance": 0.00015898, "min_y": 64, "max_y": 71, "min_tool": "stone", "silk_touch": "bonus" },
+    // diamond
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0049341, "min_y": -64, "max_y": -25, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0098682, "min_y": -64, "max_y": -25, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0033618, "min_y": -24, "max_y": -9, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0067237, "min_y": -24, "max_y": -9, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0021117, "min_y": -8, "max_y": -1, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0042234, "min_y": -8, "max_y": -1, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0007019, "min_y": 0, "max_y": 7, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.0014038, "min_y": 0, "max_y": 7, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:diamond", "xp": 5, "chance": 0.00025269, "min_y": 8, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus" },
+    // gold_badlands
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.011719, "min_y": 32, "max_y": 255, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_badlands"] },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:raw_gold", "chance": 0.0014648, "min_y": 256, "max_y": 263, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_badlands"] },
+    // emerald
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00032868, "min_y": -8, "max_y": -1, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00065735, "min_y": -8, "max_y": -1, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00067164, "min_y": 0, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.0013433, "min_y": 0, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.0012432, "min_y": 16, "max_y": 39, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.0021578, "min_y": 40, "max_y": 79, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.003644, "min_y": 80, "max_y": 143, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.0058304, "min_y": 144, "max_y": 319, "min_tool": "iron", "silk_touch": "bonus", "biome": ["#minecraft:is_mountain", "#c:is_mountain"] },
+    // emerald_anywhere
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00010482, "min_y": -64, "max_y": -1, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00020964, "min_y": -64, "max_y": -1, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 6.7164e-05, "min_y": 0, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00013433, "min_y": 0, "max_y": 15, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00012432, "min_y": 16, "max_y": 39, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00021578, "min_y": 40, "max_y": 79, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.0003644, "min_y": 80, "max_y": 143, "min_tool": "iron", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:emerald", "xp": 5, "chance": 0.00058304, "min_y": 144, "max_y": 319, "min_tool": "iron", "silk_touch": "bonus" },
+    // amethyst
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:amethyst_shard", "count": 2, "chance": 0.00039501, "min_y": -64, "max_y": -57, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:amethyst_shard", "count": 2, "chance": 0.00079003, "min_y": -64, "max_y": -57, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:amethyst_shard", "count": 2, "chance": 0.0015621, "min_y": -56, "max_y": 31, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:amethyst_shard", "count": 2, "chance": 0.0031242, "min_y": -56, "max_y": 31, "min_tool": "wood", "silk_touch": "bonus" },
+    // quartz
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:quartz", "xp": 3, "chance": 0.0012144, "min_y": -64, "max_y": 127, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:quartz", "xp": 3, "chance": 0.0024288, "min_y": -64, "max_y": 127, "min_tool": "wood", "silk_touch": "bonus" },
+    { "source": "block", "match": "#minecraft:stone_ore_replaceables", "item": "minecraft:quartz", "xp": 3, "chance": 0.0001518, "min_y": 128, "max_y": 135, "min_tool": "wood", "silk_touch": "bonus" },
+    // netherite_scrap
+    { "source": "block", "match": "#minecraft:deepslate_ore_replaceables", "item": "minecraft:netherite_scrap", "xp": 2, "chance": 0.0001, "bonus": "none", "min_y": -64, "max_y": -48, "min_tool": "diamond", "silk_touch": "bonus" },
+    // ores: end
+
+    // More examples, remove the // in front of a rule to use it:
+    // { "source": "block", "match": "#c:stones", "item": "minecraft:flint", "chance": 0.02 },
+    // { "source": "mob", "match": "minecraft:zombie", "item": "minecraft:emerald", "chance": 0.05, "bonus": "chance" },
+    // { "source": "pokemon_kill", "type": "fire", "item": "minecraft:blaze_powder", "chance": 0.1 },
+    // { "source": "block", "match": "minecraft:netherrack", "item": "minecraft:quartz", "chance": 0.05, "dimension": "minecraft:the_nether", "min_y": 100 },
+    //
+    // What the Nekoro Pokemon modpack adds (needs the Nekoro Coins mod):
+    // mined stone has a 6% chance to give a coin and a little xp, deepslate gives two
+    // { "source": "block", "match": "minecraft:stone", "item": "nekorocoins:coin116", "xp": 1, "chance": 0.06, "silk_touch": "bonus" },
+    // { "source": "block", "match": "minecraft:deepslate", "item": "nekorocoins:coin116", "count": 2, "xp": 2, "chance": 0.06, "silk_touch": "bonus" },
+    // a 0.5% chance of a type coin for every defeated or caught Pokemon, one roll per type,
+    // so a Fire/Flying Pokemon rolls for both coins (the pack has a pair like this for all 18 types)
+    // { "source": "pokemon_kill", "type": "fire", "item": "nekorocoins:coin041", "chance": 0.005 },
+    // { "source": "pokemon_catch", "type": "fire", "item": "nekorocoins:coin041", "chance": 0.005 }
+  ]
+}

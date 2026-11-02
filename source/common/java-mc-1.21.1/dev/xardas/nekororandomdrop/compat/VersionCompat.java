@@ -13,6 +13,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TieredItem;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -44,6 +49,33 @@ public final class VersionCompat {
         return level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolder(key)
                 .map(holder -> EnchantmentHelper.getItemEnchantmentLevel(holder, stack))
                 .orElse(0);
+    }
+
+    /** The weapon that killed, or an empty stack. */
+    public static ItemStack weapon(DamageSource source) {
+        ItemStack weapon = source.getWeaponItem();
+        return weapon == null ? ItemStack.EMPTY : weapon;
+    }
+
+    /**
+     * Whether the item is at least this tier. Tiered items (tools and weapons, modded ones too) are compared
+     * through the blocks their tier cannot mine: iron means it can mine diamond ore, diamond means obsidian.
+     * Other items count only if they are the right tool for that block.
+     */
+    public static boolean meetsTool(ItemStack stack, String tier) {
+        if (stack == null || stack.isEmpty()) return false;
+        BlockState reference = switch (tier) {
+            case "stone" -> Blocks.IRON_ORE.defaultBlockState();
+            case "iron" -> Blocks.DIAMOND_ORE.defaultBlockState();
+            case "diamond", "netherite" -> Blocks.OBSIDIAN.defaultBlockState();
+            default -> Blocks.STONE.defaultBlockState();
+        };
+        if (stack.getItem() instanceof TieredItem tiered) {
+            Tier itemTier = tiered.getTier();
+            if (tier.equals("netherite")) return itemTier.getIncorrectBlocksForDrops().equals(BlockTags.INCORRECT_FOR_NETHERITE_TOOL);
+            return !reference.is(itemTier.getIncorrectBlocksForDrops());
+        }
+        return stack.isCorrectToolForDrops(reference);
     }
 
     /** Any spawn egg item for this entity, modded ones included. */

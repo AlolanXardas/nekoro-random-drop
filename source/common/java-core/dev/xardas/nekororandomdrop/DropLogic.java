@@ -22,12 +22,15 @@ public final class DropLogic {
     public static void onBlockDrops(ServerLevel level, BlockPos pos, BlockState state, ServerPlayer player, ItemStack tool,
                                     Consumer<ItemEntity> drops) {
         if (RuleConfig.rules(Rule.Source.BLOCK).isEmpty()) return;
-        boolean silk = VersionCompat.silkTouch(level, tool) > 0;
+        int silk = VersionCompat.silkTouch(level, tool);
         int fortune = VersionCompat.fortune(level, tool);
         Vec3 center = Vec3.atCenterOf(pos);
         for (Rule rule : RuleConfig.rules(Rule.Source.BLOCK)) {
-            if (silk && !rule.silkTouch()) continue;
-            if (rule.matchesBlock(state) && rule.matchesPlace(level, pos)) Rewards.roll(rule, level, center, player, fortune, drops);
+            if (silk > 0 && rule.silkTouch() == Rule.SilkTouch.NO) continue;
+            if (rule.minTool() != null && !VersionCompat.meetsTool(tool, rule.minTool())) continue;
+            if (!rule.matchesBlock(state) || !rule.matchesPlace(level, pos)) continue;
+            double factor = rule.silkTouch() == Rule.SilkTouch.BONUS ? RuleConfig.silkTouchFactor(silk) : 1;
+            Rewards.roll(rule, level, center, player, fortune, factor, drops);
         }
     }
 
@@ -37,7 +40,9 @@ public final class DropLogic {
         ServerPlayer player = source.getEntity() instanceof ServerPlayer p ? p : null;
         int looting = VersionCompat.looting(level, source);
         BlockPos pos = entity.blockPosition();
+        ItemStack weapon = VersionCompat.weapon(source);
         for (Rule rule : RuleConfig.rules(Rule.Source.MOB)) {
+            if (rule.minTool() != null && !VersionCompat.meetsTool(weapon, rule.minTool())) continue;
             if (rule.matchesEntity(entity.getType()) && rule.matchesPlace(level, pos)) {
                 Rewards.roll(rule, level, entity.position(), player, looting, drops);
             }

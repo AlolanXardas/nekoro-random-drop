@@ -17,7 +17,7 @@ Cobblemon and JEI are optional.
 
 ## Config
 
-`config/nekoro_random_drop.json` is created on first start. It explains every option and has commented examples.
+`config/Nekoro/random_drop.json` is created on first start. It explains every option and has commented examples. The default file ([source/common/resources/nekoro_random_drop/default_config.json](source/common/resources/nekoro_random_drop/default_config.json)) makes mined stone and deepslate drop ores like vanilla ore generation would, for worlds without ores; delete those rules if your world still has ores.
 
 ```json
 {

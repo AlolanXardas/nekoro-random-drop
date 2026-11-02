@@ -25,7 +25,7 @@ foreach ($p in $Projects) {
     $ok = $LASTEXITCODE -eq 0
     Pop-Location
     if ($ok) {
-        Get-ChildItem "$dir\build\libs" -Filter 'Nekoro-RD-*.jar' | Copy-Item -Destination $out -Force
+        Get-ChildItem "$dir\build\libs" -Filter "Nekoro-RD-$version-*.jar" | Copy-Item -Destination $out -Force
         $results += "OK      $p"
     } else {
         $results += "FAILED  $p"

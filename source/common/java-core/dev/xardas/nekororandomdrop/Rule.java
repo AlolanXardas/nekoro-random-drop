@@ -29,7 +29,7 @@ public record Rule(
         double chance,
         int xp,
         Bonus bonus,
-        boolean silkTouch,
+        SilkTouch silkTouch,
         boolean playerOnly,
         boolean toInventory,
         int cooldown,
@@ -37,7 +37,11 @@ public record Rule(
         int maxY,
         Set<ResourceLocation> dimensions,
         Set<ResourceLocation> biomeIds,
-        List<ResourceLocation> biomeTags) {
+        List<ResourceLocation> biomeTags,
+        String minTool) {
+
+    /** Tool tiers for "min_tool", lowest first. */
+    public static final List<String> TOOL_TIERS = List.of("wood", "stone", "iron", "diamond", "netherite");
 
     public enum Source { BLOCK, MOB, POKEMON_KILL, POKEMON_CATCH }
 
@@ -67,6 +71,9 @@ public record Rule(
 
     /** How Fortune (blocks) or Looting (mobs) changes the reward. */
     public enum Bonus { MULTIPLY, CHANCE, NONE }
+
+    /** Blocks mined with Silk Touch: no drop, a normal drop, or the chance goes up with the Silk Touch level. */
+    public enum SilkTouch { NO, YES, BONUS }
 
     public boolean matchesBlock(BlockState state) {
         if (ids.contains(BuiltInRegistries.BLOCK.getKey(state.getBlock()))) return true;
@@ -104,6 +111,7 @@ public record Rule(
         if (xp > 0) sb.append(item != null ? " + " : "").append(xp).append(" xp");
         sb.append(String.format(Locale.ROOT, " (%s%%)", trim(chance * 100)));
         if (cooldown > 0) sb.append(" cooldown ").append(cooldown);
+        if (minTool != null) sb.append(" needs ").append(minTool).append(" tool");
         if (hasMinY() && hasMaxY()) sb.append(" y ").append(minY).append("..").append(maxY);
         else if (hasMinY()) sb.append(" y >= ").append(minY);
         else if (hasMaxY()) sb.append(" y <= ").append(maxY);

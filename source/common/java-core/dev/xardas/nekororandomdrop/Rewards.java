@@ -23,12 +23,18 @@ public final class Rewards {
         lastReward.clear();
     }
 
-    /**
-     * @param bonusLevel Fortune or Looting level, 0 when it does not apply
-     * @param drops      where dropped items go (an event's drop list), or null to spawn them in the world
-     */
     public static void roll(Rule rule, ServerLevel level, Vec3 pos, ServerPlayer player, int bonusLevel,
                             Consumer<ItemEntity> drops) {
+        roll(rule, level, pos, player, bonusLevel, 1, drops);
+    }
+
+    /**
+     * @param bonusLevel   Fortune or Looting level, 0 when it does not apply
+     * @param chanceFactor the rule's chance is multiplied by this (Silk Touch "bonus")
+     * @param drops        where dropped items go (an event's drop list), or null to spawn them in the world
+     */
+    public static void roll(Rule rule, ServerLevel level, Vec3 pos, ServerPlayer player, int bonusLevel,
+                            double chanceFactor, Consumer<ItemEntity> drops) {
         if (rule.playerOnly() && player == null) return;
         int now = level.getServer().getTickCount();
         if (rule.cooldown() > 0 && player != null) {
@@ -36,7 +42,7 @@ public final class Rewards {
             if (last != null && now - last < rule.cooldown()) return;
         }
         RandomSource random = level.getRandom();
-        double chance = rule.chance();
+        double chance = rule.chance() * chanceFactor;
         if (rule.bonus() == Rule.Bonus.CHANCE) chance *= bonusLevel + 1;
         if (random.nextDouble() >= chance) return;
         if (rule.cooldown() > 0 && player != null) lastReward.get(player.getUUID()).put(rule.index(), now);
@@ -63,8 +69,8 @@ public final class Rewards {
             }
         }
         if (rule.xp() > 0) {
-            if (rule.toInventory() && player != null) player.giveExperiencePoints(rule.xp());
-            else ExperienceOrb.award(level, pos, rule.xp());
+            // always as orbs: xp given directly would skip Mending
+            ExperienceOrb.award(level, rule.toInventory() && player != null ? player.position() : pos, rule.xp());
         }
     }
 }

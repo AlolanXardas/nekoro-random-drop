@@ -1,6 +1,7 @@
 package dev.xardas.nekororandomdrop.compat;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,6 +13,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 
@@ -36,6 +40,25 @@ public final class VersionCompat {
     public static int looting(ServerLevel level, DamageSource source) {
         if (!(source.getEntity() instanceof LivingEntity killer)) return 0;
         return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, killer.getMainHandItem());
+    }
+
+    /** The weapon that killed (the killer's main hand), or an empty stack. */
+    public static ItemStack weapon(DamageSource source) {
+        return source.getEntity() instanceof LivingEntity killer ? killer.getMainHandItem() : ItemStack.EMPTY;
+    }
+
+    /** Whether the item is at least this tier: tiered items by tier level (wood/gold 0 ... netherite 4), others if they can mine the tier's block. */
+    public static boolean meetsTool(ItemStack stack, String tier) {
+        if (stack == null || stack.isEmpty()) return false;
+        int needed = Math.max(0, List.of("wood", "stone", "iron", "diamond", "netherite").indexOf(tier));
+        if (stack.getItem() instanceof TieredItem tiered) return tiered.getTier().getLevel() >= needed;
+        BlockState reference = switch (needed) {
+            case 1 -> Blocks.IRON_ORE.defaultBlockState();
+            case 2 -> Blocks.DIAMOND_ORE.defaultBlockState();
+            case 3, 4 -> Blocks.OBSIDIAN.defaultBlockState();
+            default -> Blocks.STONE.defaultBlockState();
+        };
+        return stack.isCorrectToolForDrops(reference);
     }
 
     /** Any spawn egg item for this entity, modded ones included. */
