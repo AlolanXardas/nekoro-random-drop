@@ -1,11 +1,58 @@
-<p style="text-align: center;"><span style="color: #b96ad9;">If you like my mod but it&rsquo;s not available for the Minecraft version or mod loader you need, let me know in the comments or on <a href="https://discord.gg/QxRtHCJ57R" target="_blank" rel="nofollow noopener"><span style="color: #3598db; text-decoration: underline;">Discord</span></a>, and I&rsquo;ll try to make it happen!<br>If you find a bug, have an idea for an improvement or would like a similar small mod, just let me know and I&rsquo;ll do my best.</span></p>
-<p style="text-align: center;"><span style="color: #fff;">Extra random drops from blocks and mobs, all set up in one config file.<br>With <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/mc-mods/cobblemon" target="_blank" rel="nofollow noopener">Cobblemon</a> installed it can also reward defeated and caught Pok&eacute;mon, but Cobblemon is not required.<br>Made mainly for my <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/modpacks/nekoropolia" target="_blank" rel="nofollow noopener">Nekoro Pokemon</a> modpack, but it works with any items from any mod.</span></p>
-<h3 style="text-align: center;"><span style="color: #b96ad9;">The default config: ores from stone</span></h3>
-<p style="text-align: center;"><span style="color: #fff;">All rules are in <strong>config/Nekoro/random_drop.json</strong>. The file explains every option and has commented examples, including the setup my modpack uses. Remove the // in front of a line to turn it on.<br><strong>Out of the box, mined stone and deepslate drop ores</strong> about as often as vanilla ore generation would give them at that height: coal, iron, copper, gold, redstone, lapis, diamonds and emeralds, plus amethyst, quartz and a tiny chance of netherite scrap. Deepslate drops twice as often, below Y 0 every kind can drop, emeralds are more common in mountains and gold in badlands. The right pickaxe tier is needed, like for real ores.<br><strong>This is meant for worlds without ores</strong> (for example with ore removal in my Nekoro World Setup mod). If your world still generates ores, delete those rules from the config, or you get ores twice.</span></p>
-<h3 style="text-align: center;"><span style="color: #b96ad9;">Features</span></h3>
-<p style="text-align: center;"><span style="color: #fff;">&bull; Drops from mined blocks and from killed mobs, by id or by tag (e.g. #c:stones)<br>&bull; Any chance, from always to 0.001% and lower<br>&bull; Items, experience or both<br>&bull; Fortune and Looting work at any level, also modded levels up to 255<br>&bull; No drops with Silk Touch, unless you allow it for a rule, or let the Silk Touch level raise the chance, with a setting for how much each level adds (levels above I need a mod that raises enchantment levels, such as Nekoro World Setup)<br>&bull; A rule can need a tool of a set tier, e.g. iron or better for diamonds, like mining an ore<br>&bull; Drop on the ground or put straight into the player&rsquo;s inventory (experience always comes as orbs, so Mending works)<br>&bull; Cooldown per player, e.g. one reward every few ticks while mining<br>&bull; Limit a rule to a height range, a dimension or a biome (biome tags work too), checked at the exact block, so a rule for Lush Caves works only in the cave<br>&bull; Cobblemon: rules for defeated (killed or beaten in battle) and caught Pok&eacute;mon, by type or by species<br>&bull; Every rule rolls on its own, so a Fire/Flying Pok&eacute;mon rolls for both types<br>&bull; With <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/mc-mods/jei" target="_blank" rel="nofollow noopener">JEI</a> installed, a <strong>Random Drop</strong> tab shows every rule: look up an item to see where it drops and how often</span></p>
-<h3 style="text-align: center;"><span style="color: #b96ad9;">Example</span></h3>
-<p style="text-align: center;"><span style="color: #fff;">A 2% chance of flint from any stone, a 0.2% chance of a diamond from deepslate below Y -40, and a 0.5% chance of a coin from every Fire Pok&eacute;mon you defeat in the Nether:</span></p>
+<p style="text-align: center;">Extra random drops from blocks, mobs and Pok&eacute;mon, all set up in one config file.<br><strong>By default mined stone drops ores.</strong> See Default config if your world still has normal ores.<br>Made for my <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/modpacks/nekoropolia" target="_blank" rel="nofollow noopener">Nekoro Pokemon</a> modpack, but it works with any items from any mod.</p>
+<p style="text-align: center;"><strong>Required on the server. Optional on the client, where it adds the JEI tab.</strong></p>
+<h2 style="text-align: center;"><span style="color: #b96ad9; font-size: 18pt;">Work in progress</span></h2>
+<p style="text-align: center;">All my projects are being prepared for a big update of my modpack. I'm changing them step by step so they fit together, and they should be ready by the end of this year.<br>Many graphics are temporary until the mechanics of all my mods are finished.</p>
+<p style="text-align: center;">Found a bug, have an idea, or need this mod on another loader or Minecraft version?<br>Tell me in the comments or on <a style="color: #3598db;" href="https://discord.gg/QxRtHCJ57R" target="_blank" rel="nofollow noopener">Discord</a>.</p>
+<h2><span style="color: #b96ad9; font-size: 18pt;">Features</span></h2>
+<p><span style="font-size: 14pt;"><strong>Default config</strong></span></p>
+<div class="spoiler">
+<ul>
+<li>Mined stone and deepslate drop coal, iron, copper, gold, redstone, lapis, diamonds and emeralds about as often as vanilla ore generation would give them at that height, plus amethyst, quartz and a tiny chance of netherite scrap.</li>
+<li>Deepslate drops twice as often, and below Y 0 every kind can drop.</li>
+<li>Emeralds are more common in mountains and gold in badlands.</li>
+<li>The right pickaxe tier is needed, like for real ores.</li>
+<li>This is meant for worlds without ores, for example with ore removal in Nekoro World Setup. If your world still generates ores, delete these rules or you get ores twice.</li>
+</ul>
+</div>
+<p><span style="font-size: 14pt;"><strong>Rules</strong></span></p>
+<div class="spoiler">
+<ul>
+<li>Drops from mined blocks and killed mobs, by id or by tag.</li>
+<li>Any chance, from always to 0.001% and lower.</li>
+<li>Items, experience or both. Experience comes as orbs, so Mending works.</li>
+<li>Fortune and Looting work at any level, also modded levels up to 255.</li>
+<li>No drops with Silk Touch, unless you allow it for a rule or let its level raise the chance.</li>
+<li>A rule can need a tool of a set tier, like mining an ore.</li>
+<li>Drop on the ground or straight into the inventory.</li>
+<li>A cooldown per player.</li>
+<li>Limit a rule to a height, dimension or biome, checked at the exact block.</li>
+<li>Every rule rolls on its own.</li>
+</ul>
+</div>
+<p><span style="font-size: 14pt;"><strong>Cobblemon</strong></span></p>
+<div class="spoiler">
+<ul>
+<li>With <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/mc-mods/cobblemon" target="_blank" rel="nofollow noopener">Cobblemon</a> installed, rules can reward defeated and caught Pok&eacute;mon, by type or by species.</li>
+<li>Defeated means killed or beaten in battle.</li>
+<li>A Fire/Flying Pok&eacute;mon rolls for both types.</li>
+<li>Cobblemon is optional. It has no Forge 1.21.1 version, so these rules do nothing there.</li>
+</ul>
+</div>
+<p><span style="font-size: 14pt;"><strong>JEI tab</strong></span></p>
+<div class="spoiler">
+<ul>
+<li>With <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/mc-mods/jei" target="_blank" rel="nofollow noopener">JEI</a> installed, a Random Drop tab shows every rule: look up an item to see where it drops and how often.</li>
+<li>The tab is built from the player's own copy of the config, so modpacks should ship the config.</li>
+</ul>
+</div>
+<h2><span style="color: #b96ad9; font-size: 18pt;">More information</span></h2>
+<p><span style="font-size: 14pt;"><strong>Config</strong></span></p>
+<div class="spoiler">
+<ul>
+<li>All rules are in <strong>config/Nekoro/random_drop.json</strong>.</li>
+<li>The file explains every option and has commented examples, including the setup of my modpack. Remove the // in front of a line to turn it on.</li>
+</ul>
+<p>A 2% chance of flint from any stone, a 0.2% chance of a diamond from deepslate below Y -40, and a 0.5% chance of a coin from every Fire Pok&eacute;mon you defeat in the Nether:</p>
 <pre>{
   "rules": [
     { "source": "block", "match": "#c:stones", "item": "minecraft:flint", "chance": 0.02 },
@@ -13,12 +60,19 @@
     { "source": "pokemon_kill", "type": "fire", "item": "nekorocoins:coin041", "chance": 0.005, "dimension": "minecraft:the_nether" }
   ]
 }</pre>
-<h3 style="text-align: center;"><span style="color: #b96ad9;">Commands</span></h3>
-<p style="text-align: center;"><span style="color: #fff;"><strong>/randomdrop reload</strong> &ndash; load the config again without restarting (/reload does it too and also refreshes the JEI tab)<br><strong>/randomdrop list</strong> &ndash; show all active rules<br>Both need operator permissions.</span></p>
-<h3 style="text-align: center;"><span style="color: #b96ad9;">Requires</span></h3>
-<p style="text-align: center;"><span style="color: #fff;">Minecraft 1.21.1: NeoForge, Forge or Fabric<br>Minecraft 1.20.1: Forge (also works on NeoForge 1.20.1), Fabric or Quilt<br>Fabric and Quilt also need</span> <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/mc-mods/fabric-api" target="_blank" rel="nofollow noopener">Fabric API</a><span style="color: #fff;"> (QFAPI on Quilt)</span><br><a style="color: #3598db;" href="https://www.curseforge.com/minecraft/mc-mods/cobblemon" target="_blank" rel="nofollow noopener">Cobblemon</a> <span style="color: #fff;">(1.8+ on 1.21.1, 1.5+ on 1.20.1) and</span> <a style="color: #3598db;" href="https://www.curseforge.com/minecraft/mc-mods/jei" target="_blank" rel="nofollow noopener">JEI</a> <span style="color: #fff;">are optional<br>Cobblemon has no Forge 1.21.1 version, so Pok&eacute;mon rules do nothing there</span></p>
-<p style="text-align: center;"><span style="color: #fff;">Drops work with the mod on the server only. Players who also have it (and JEI) see the Random Drop tab, built from their own copy of the config file, so modpacks should ship the config.</span></p>
-<h3 style="text-align: center;"><span style="color: #b96ad9;">AI Usage</span></h3>
-<p style="text-align: center;"><span style="color: #fff;">I use AI (Claude) only for writing code and editing text.<br>I don&rsquo;t like releasing things that aren&rsquo;t in the best shape I can make them.<br>AI saves me many hours on the parts I find tedious, which leaves me more time for the creative side.<br>Anything I didn&rsquo;t make is listed in the Credits section, together with the terms I use it under.</span></p>
-<h3 style="text-align: center;"><span style="color: #b96ad9;">Credits</span></h3>
-<p style="text-align: center;"><span style="color: #fff;">Mod by Alolan Xardas, code written with Claude, released under the MIT License.</span></p>
+</div>
+<p><span style="font-size: 14pt;"><strong>Commands</strong></span></p>
+<div class="spoiler">
+<ul>
+<li><strong>/randomdrop reload:</strong> load the config again without restarting. /reload does it too and also refreshes the JEI tab.</li>
+<li><strong>/randomdrop list:</strong> show all active rules.</li>
+<li>Both need operator permissions.</li>
+</ul>
+</div>
+<p><span style="font-size: 14pt;"><strong>Legal</strong></span></p>
+<div class="spoiler">
+<ul>
+<li>Mod by Alolan Xardas, released under the MIT License.</li>
+<li>I use AI (Claude) mainly for coding. I draw the pixel art myself.</li>
+</ul>
+</div>
