@@ -14,6 +14,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -36,7 +37,25 @@ public final class RandomDropCategory implements IRecipeCategory<DropDisplay> {
     private final IDrawableStatic arrow;
 
     public RandomDropCategory(IGuiHelper gui) {
-        this.icon = gui.createDrawableItemStack(new ItemStack(Items.CHEST));
+        // the Amethyst Cat Coin of Nekoro Coins, the icon of all Nekoro mods (a copy of its 32x32 texture, drawn at 16x16)
+        this.icon = new IDrawable() {
+            private final ResourceLocation texture = ResourceLocation.tryBuild(RandomDrop.MOD_ID, "textures/gui/nekoro_icon.png");
+
+            @Override
+            public int getWidth() {
+                return 16;
+            }
+
+            @Override
+            public int getHeight() {
+                return 16;
+            }
+
+            @Override
+            public void draw(GuiGraphics graphics, int x, int y) {
+                graphics.blit(texture, x, y, 16, 16, 0, 0, 32, 32, 32, 32);
+            }
+        };
         this.arrow = gui.getRecipeArrow();
     }
 
@@ -47,7 +66,7 @@ public final class RandomDropCategory implements IRecipeCategory<DropDisplay> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("jei.nekoro_random_drop.title");
+        return Component.translatable("jei.nekororandomdrop.title");
     }
 
     @Override

@@ -3,7 +3,7 @@ loaderVersion="[47,)"
 license="MIT"
 
 [[mods]]
-    modId="nekoro_random_drop"
+    modId="nekororandomdrop"
     version="${version}"
     displayName="Nekoro Random Drop"
     authors="Alolan Xardas"
@@ -11,28 +11,28 @@ license="MIT"
         Extra random drops from blocks and mobs, set up in a config file. Optional Cobblemon support for drops from defeated and caught Pokemon.
     '''
 
-[[dependencies.nekoro_random_drop]]
+[[dependencies.nekororandomdrop]]
     modId="forge"
     mandatory=true
     versionRange="[47,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.nekoro_random_drop]]
+[[dependencies.nekororandomdrop]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.20.1,1.20.2)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.nekoro_random_drop]]
+[[dependencies.nekororandomdrop]]
     modId="jei"
     mandatory=false
     versionRange="*"
     ordering="NONE"
     side="CLIENT"
 
-[[dependencies.nekoro_random_drop]]
+[[dependencies.nekororandomdrop]]
     modId="cobblemon"
     mandatory=false
     versionRange="[1.5,)"

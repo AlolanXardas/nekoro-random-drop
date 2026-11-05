@@ -24,7 +24,7 @@ import dev.xardas.nekororandomdrop.compat.VersionCompat;
 public record DropDisplay(List<ItemStack> sources, ItemStack sourceIcon, ItemStack output,
                           Component chance, List<Component> lines) {
 
-    private static final String KEY = "jei.nekoro_random_drop.";
+    private static final String KEY = "jei.nekororandomdrop.";
 
     public static DropDisplay of(Rule rule) {
         List<ItemStack> sources = new ArrayList<>();

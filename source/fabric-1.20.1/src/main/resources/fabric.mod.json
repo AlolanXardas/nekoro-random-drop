@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "nekoro_random_drop",
+  "id": "nekororandomdrop",
   "version": "${version}",
   "name": "Nekoro Random Drop",
   "description": "Extra random drops from blocks and mobs, set up in a config file. Optional Cobblemon support for drops from defeated and caught Pokemon.",

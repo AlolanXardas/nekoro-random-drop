@@ -29,7 +29,7 @@ import dev.xardas.nekororandomdrop.compat.VersionCompat;
 public final class RuleConfig {
     public static final String FILE_NAME = "random_drop.json";
     /** Where release 1 and 2 kept the file; moved to the new place on first start. */
-    private static final String OLD_FILE_NAME = RandomDrop.MOD_ID + ".json";
+    private static final String OLD_FILE_NAME = "nekoro_random_drop.json";
 
     private static Path configDir = Path.of("config");
 

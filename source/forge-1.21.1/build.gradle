@@ -5,7 +5,7 @@ plugins {
 
 version = mod_version
 group = 'dev.xardas'
-base.archivesName = 'nekoro_random_drop'
+base.archivesName = 'nekororandomdrop'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 tasks.withType(JavaCompile).configureEach {
@@ -47,7 +47,7 @@ jar {
     from('../../LICENSE')
     manifest {
         attributes([
-            'Specification-Title'   : 'nekoro_random_drop',
+            'Specification-Title'   : 'nekororandomdrop',
             'Specification-Vendor'  : 'Alolan Xardas',
             'Specification-Version' : '1',
             'Implementation-Title'  : 'Nekoro Random Drop',

@@ -5,7 +5,7 @@ plugins {
 
 version = mod_version
 group = 'dev.xardas'
-base.archivesName = 'nekoro_random_drop'
+base.archivesName = 'nekororandomdrop'
 
 // Gradle runs on JDK 21, but 1.20.1 needs Java 17 bytecode
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)

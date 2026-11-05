@@ -5,7 +5,7 @@ plugins {
 
 version = mod_version
 group = 'dev.xardas'
-base.archivesName = 'nekoro_random_drop'
+base.archivesName = 'nekororandomdrop'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 tasks.withType(JavaCompile).configureEach {
