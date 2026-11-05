@@ -28,8 +28,6 @@ import dev.xardas.nekororandomdrop.compat.VersionCompat;
 /** Reads config/Nekoro/random_drop.json (config/Nekoro holds the configs of all Nekoro mods). Comments are allowed. */
 public final class RuleConfig {
     public static final String FILE_NAME = "random_drop.json";
-    /** Where release 1 and 2 kept the file; moved to the new place on first start. */
-    private static final String OLD_FILE_NAME = "nekoro_random_drop.json";
 
     private static Path configDir = Path.of("config");
 
@@ -91,13 +89,7 @@ public final class RuleConfig {
         try {
             if (Files.notExists(path)) {
                 Files.createDirectories(path.getParent());
-                Path old = configDir.resolve(OLD_FILE_NAME);
-                if (Files.exists(old)) {
-                    Files.move(old, path);
-                    RandomDrop.LOGGER.info("Moved config/{} to config/Nekoro/{}", OLD_FILE_NAME, FILE_NAME);
-                } else {
-                    Files.writeString(path, defaultConfig(), StandardCharsets.UTF_8);
-                }
+                Files.writeString(path, defaultConfig(), StandardCharsets.UTF_8);
             }
             JsonObject root;
             try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
