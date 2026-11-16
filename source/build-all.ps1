@@ -1,4 +1,4 @@
-# Builds Nekoro Random Drop for every Minecraft version and loader, then copies the jars to ..\Gotowe\<version> (next to the source folder).
+# Builds Nekoro Random Drop for every Minecraft version and loader, then copies the jars to ..\release\<version> (next to the source folder).
 # Usage:  & .\build-all.ps1                                       (all projects)
 #         & .\build-all.ps1 fabric-1.21.1                         (selected ones)
 # The first Forge/NeoForge build takes about 10 minutes (Minecraft decompilation), later ones under a minute.
@@ -9,10 +9,10 @@ param([string[]]$Projects = @('neoforge-1.21.1', 'fabric-1.21.1', 'forge-1.21.1'
 $ErrorActionPreference = 'Continue'
 $root = $PSScriptRoot
 # Gradle needs JDK 21; a local copy is used when present, otherwise JAVA_HOME as set
-$jdk = 'C:\Users\AlolanXardas\Narzedzia\jdk-21'
+$jdk = 'E:\Minecraft\Tools\jdk-21'
 if (Test-Path $jdk) { $env:JAVA_HOME = $jdk }
 $version = (Select-String -Path "$root\fabric-1.21.1\gradle.properties" -Pattern '^mod_version=(.+)$').Matches[0].Groups[1].Value
-$out = Join-Path (Split-Path $root -Parent) "Gotowe\$version"
+$out = Join-Path (Split-Path $root -Parent) "release\$version"
 New-Item -ItemType Directory -Force $out | Out-Null
 
 $results = @()

@@ -37,7 +37,7 @@ Needs JDK 21. The code is shared between loaders in `source/common`; every loade
 
 ```
 cd source
-.\build-all.ps1                  # all projects, jars go to ..\Gotowe\<version>
+.\build-all.ps1                  # all projects, jars go to ..\release\<version>
 .\build-all.ps1 fabric-1.21.1    # selected ones
 ```
 
