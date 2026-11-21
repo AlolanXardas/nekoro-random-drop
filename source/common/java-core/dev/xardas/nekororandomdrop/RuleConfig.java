@@ -104,6 +104,8 @@ public final class RuleConfig {
                     if (element.isJsonNull()) continue; // a comma after the last rule
                     try {
                         loaded.add(parse(loaded.size(), element.getAsJsonObject()));
+                    } catch (MissingMod e) {
+                        // a rule for a mod that is not installed (e.g. Nekoro Gear ores): left out without a warning
                     } catch (RuntimeException e) {
                         skipped++;
                         RandomDrop.LOGGER.warn("Skipping rule {} in {}: {}", loaded.size() + skipped, FILE_NAME, e.getMessage());
@@ -114,6 +116,21 @@ public final class RuleConfig {
             RandomDrop.LOGGER.error("Could not read {}, no random drops are active", FILE_NAME, e);
         }
         return new Read(skipped, silkBonus);
+    }
+
+    /** Thrown for a rule whose item belongs to a mod that is not installed. */
+    private static final class MissingMod extends RuntimeException {
+        MissingMod() {
+            super(null, null, false, false);
+        }
+    }
+
+    private static final Map<String, Boolean> NAMESPACES = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /** Whether any item of this namespace exists, i.e. whether that mod is installed (items do not change after start). */
+    private static boolean hasNamespace(String namespace) {
+        return NAMESPACES.computeIfAbsent(namespace,
+                ns -> BuiltInRegistries.ITEM.keySet().stream().anyMatch(key -> key.getNamespace().equals(ns)));
     }
 
     /** The file written on first start, kept in the jar so it is easy to read and edit. */
@@ -142,6 +159,7 @@ public final class RuleConfig {
         String itemId = string(o, "item", "");
         if (!itemId.isEmpty()) {
             ResourceLocation id = VersionCompat.id(itemId);
+            if (!BuiltInRegistries.ITEM.containsKey(id) && !hasNamespace(id.getNamespace())) throw new MissingMod();
             item = BuiltInRegistries.ITEM.getOptional(id).orElseThrow(() -> new IllegalArgumentException("unknown item " + id));
         }
         int xp = o.has("xp") ? o.get("xp").getAsInt() : 0;
@@ -163,6 +181,15 @@ public final class RuleConfig {
         if ("gold".equals(minTool)) minTool = "wood";
         if (minTool != null && !Rule.TOOL_TIERS.contains(minTool)) throw new IllegalArgumentException("unknown min_tool " + minTool);
 
+        List<Rule.ToolBonus> toolBonus = new ArrayList<>();
+        if (o.has("tool_bonus")) {
+            for (Map.Entry<String, JsonElement> e : o.getAsJsonObject("tool_bonus").entrySet()) {
+                boolean tag = e.getKey().startsWith("#");
+                toolBonus.add(new Rule.ToolBonus(VersionCompat.id(tag ? e.getKey().substring(1) : e.getKey()), tag,
+                        Math.max(0, e.getValue().getAsDouble())));
+            }
+        }
+
         return new Rule(index, source, ids, tags, types, item,
                 o.has("count") ? Math.max(1, o.get("count").getAsInt()) : 1,
                 o.has("chance") ? o.get("chance").getAsDouble() : 1.0,
@@ -172,7 +199,7 @@ public final class RuleConfig {
                 !o.has("player_only") || o.get("player_only").getAsBoolean(),
                 o.has("to_inventory") && o.get("to_inventory").getAsBoolean(),
                 o.has("cooldown") ? Math.max(0, o.get("cooldown").getAsInt()) : 0,
-                minY, maxY, dimensions, biomeIds, biomeTags, minTool);
+                minY, maxY, dimensions, biomeIds, biomeTags, minTool, List.copyOf(toolBonus));
     }
 
     /** true, false or "bonus". */

@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -38,7 +39,23 @@ public record Rule(
         Set<ResourceLocation> dimensions,
         Set<ResourceLocation> biomeIds,
         List<ResourceLocation> biomeTags,
-        String minTool) {
+        String minTool,
+        List<ToolBonus> toolBonus) {
+
+    /** "tool_bonus": a tool (item id) or tools (#tag) that multiply the chance. */
+    public record ToolBonus(ResourceLocation id, boolean tag, double factor) { }
+
+    /** Product of the tool bonuses the used tool matches; 1 without any. */
+    public double toolFactor(ItemStack tool) {
+        double factor = 1;
+        if (tool == null || tool.isEmpty()) return factor;
+        for (ToolBonus bonus : toolBonus) {
+            boolean hit = bonus.tag() ? tool.is(TagKey.create(Registries.ITEM, bonus.id()))
+                    : BuiltInRegistries.ITEM.getKey(tool.getItem()).equals(bonus.id());
+            if (hit) factor *= bonus.factor();
+        }
+        return factor;
+    }
 
     /** Tool tiers for "min_tool", lowest first. */
     public static final List<String> TOOL_TIERS = List.of("wood", "stone", "iron", "diamond", "netherite");
@@ -112,6 +129,9 @@ public record Rule(
         sb.append(String.format(Locale.ROOT, " (%s%%)", trim(chance * 100)));
         if (cooldown > 0) sb.append(" cooldown ").append(cooldown);
         if (minTool != null) sb.append(" needs ").append(minTool).append(" tool");
+        for (ToolBonus bonus : toolBonus) {
+            sb.append(" x").append(trim(bonus.factor())).append(" with ").append(bonus.tag() ? "#" : "").append(bonus.id());
+        }
         if (hasMinY() && hasMaxY()) sb.append(" y ").append(minY).append("..").append(maxY);
         else if (hasMinY()) sb.append(" y >= ").append(minY);
         else if (hasMaxY()) sb.append(" y <= ").append(maxY);

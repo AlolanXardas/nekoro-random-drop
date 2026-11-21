@@ -29,7 +29,7 @@ public final class DropLogic {
             if (silk > 0 && rule.silkTouch() == Rule.SilkTouch.NO) continue;
             if (rule.minTool() != null && !VersionCompat.meetsTool(tool, rule.minTool())) continue;
             if (!rule.matchesBlock(state) || !rule.matchesPlace(level, pos)) continue;
-            double factor = rule.silkTouch() == Rule.SilkTouch.BONUS ? RuleConfig.silkTouchFactor(silk) : 1;
+            double factor = (rule.silkTouch() == Rule.SilkTouch.BONUS ? RuleConfig.silkTouchFactor(silk) : 1) * rule.toolFactor(tool);
             Rewards.roll(rule, level, center, player, fortune, factor, drops);
         }
     }

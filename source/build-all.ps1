@@ -2,7 +2,8 @@
 # Usage:  & .\build-all.ps1                                       (all projects)
 #         & .\build-all.ps1 fabric-1.21.1                         (selected ones)
 # The first Forge/NeoForge build takes about 10 minutes (Minecraft decompilation), later ones under a minute.
-param([string[]]$Projects = @('neoforge-1.21.1', 'fabric-1.21.1', 'forge-1.21.1', 'fabric-1.20.1', 'forge-1.20.1'))
+# Only NeoForge and Fabric 1.21.1 since release 5; the old projects stay for reference.
+param([string[]]$Projects = @('neoforge-1.21.1', 'fabric-1.21.1'))
 
 # Not 'Stop': Gradle writes plain info lines to stderr, and PowerShell 5.1 would treat them as errors
 # when output is redirected. Success is judged by the gradlew exit code instead.
